@@ -1,6 +1,9 @@
 -- Run in Supabase SQL Editor. Create the first auth user in Dashboard or with
 -- the server's POST /api/users route, then replace the email below if needed.
-create type public.user_role as enum ('admin', 'teacher');
+do $$ begin
+  create type public.user_role as enum ('admin', 'teacher');
+exception when duplicate_object then null;
+end $$;
 
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,

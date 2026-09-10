@@ -13,7 +13,7 @@ npm run dev
 ## Connect Supabase
 
 1. Create a Supabase project and copy the project URL, anon key, and service-role key into `.env`. Keep `SUPABASE_SERVICE_ROLE_KEY` server-only; only the two `VITE_*` values are used by the browser.
-2. In Supabase SQL Editor, run [`supabase/schema.sql`](./supabase/schema.sql) in full. It creates the tables, helper functions, and teacher/admin RLS policies.
+2. In Supabase SQL Editor, run [`supabase/schema.sql`](./supabase/schema.sql) in full for a new project. If you already ran the original schema, run [`supabase/upgrade.sql`](./supabase/upgrade.sql) instead; it is safe to run repeatedly.
 3. Create the initial admin and teacher accounts:
 
 ```bash
