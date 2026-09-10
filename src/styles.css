@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base { body { @apply bg-paper text-ink antialiased; font-family: 'DM Sans', sans-serif; } } 
+@layer components { .serif { font-family: 'DM Serif Display', serif; } .card { @apply rounded-2xl border border-slate-200 bg-white shadow-[0_8px_30px_rgba(23,32,51,0.04)]; } .input { @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100; } .btn { @apply inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition; } }
