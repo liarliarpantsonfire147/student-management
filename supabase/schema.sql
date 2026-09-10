@@ -5,9 +5,11 @@ create type public.user_role as enum ('admin', 'teacher');
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text not null,
+  email text,
   role public.user_role not null default 'teacher',
   created_at timestamptz not null default now()
 );
+alter table public.profiles add column if not exists email text;
 create table public.classes (
   id uuid primary key default gen_random_uuid(), name text not null,
   year_group text not null, room text, created_at timestamptz not null default now()
@@ -55,6 +57,30 @@ create policy "admins manage students" on public.students for all to authenticat
 create policy "staff read enrollments" on public.enrollments for select to authenticated using (public.teaches_class(class_id));
 create policy "admins manage enrollments" on public.enrollments for all to authenticated using (public.is_admin()) with check (public.is_admin());
 create policy "staff manage assigned grades" on public.grades for all to authenticated using (public.teaches_class(class_id)) with check (public.teaches_class(class_id));
+
+-- Teachers can add a student only through this scoped function. It creates the
+-- student and enrollment atomically, and checks the teacher's class assignment.
+create or replace function public.add_student_to_class(target_class uuid, student_name text, student_email text default null, student_year text default null)
+returns public.students
+language plpgsql security definer set search_path = public
+as $$
+declare created_student public.students;
+begin
+  if not public.teaches_class(target_class) then
+    raise exception 'You are not assigned to this class';
+  end if;
+  if nullif(trim(student_name), '') is null then
+    raise exception 'Student name is required';
+  end if;
+  insert into public.students(full_name, email, year_group)
+  values (trim(student_name), nullif(trim(student_email), ''), nullif(trim(student_year), ''))
+  returning * into created_student;
+  insert into public.enrollments(class_id, student_id) values (target_class, created_student.id);
+  return created_student;
+end;
+$$;
+revoke all on function public.add_student_to_class(uuid, text, text, text) from public;
+grant execute on function public.add_student_to_class(uuid, text, text, text) to authenticated;
 
 -- Initial admin: create this user first with POST /api/users (service role), then run:
 -- update public.profiles set role='admin' where id=(select id from auth.users where email='admin@school.edu');

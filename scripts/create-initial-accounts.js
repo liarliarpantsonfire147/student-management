@@ -23,7 +23,7 @@ for (const account of accounts) {
     const result = await supabase.auth.admin.updateUserById(user.id, { password: account.password, email_confirm: true });
     if (result.error) throw result.error;
   }
-  const { error: profileError } = await supabase.from('profiles').upsert({ id: user.id, full_name: account.full_name, role: account.role }, { onConflict: 'id' });
+  const { error: profileError } = await supabase.from('profiles').upsert({ id: user.id, full_name: account.full_name, email: account.email, role: account.role }, { onConflict: 'id' });
   if (profileError) throw profileError;
   console.log(`${account.role}: ${account.email} / ${account.password}`);
 }

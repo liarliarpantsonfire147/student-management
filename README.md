@@ -31,6 +31,10 @@ Set `INITIAL_*` values in `.env` before running the command if you want differen
 
 Run `npm run server` in a second terminal for the Express API, then `npm run dev` for the frontend. The frontend uses Supabase Auth and queries Supabase directly with the browser-safe anon key.
 
+## Optional development data
+
+To create 50 fictional students, three classes, and test enrollments, run [`supabase/seed.dev.sql`](./supabase/seed.dev.sql) in Supabase SQL Editor after `schema.sql`. Do not run this seed in a production project. The seed uses `school.test` email addresses and is safe to rerun.
+
 ## Structure
 
 `src/App.jsx` contains the lightweight routed screens and grade drawer. `server/index.js` contains the service-role-only staff creation route plus class, roster, and grade endpoints. `supabase/schema.sql` creates the profiles, classes, class assignments, students, enrollments, and grades tables with teacher-scoped RLS.
