@@ -34,7 +34,7 @@ create table public.enrollments (
 create table public.grades (
   id uuid primary key default gen_random_uuid(), class_id uuid not null references public.classes(id) on delete cascade,
   student_id uuid not null references public.students(id) on delete cascade,
-  grade text, feedback text, updated_by uuid references public.profiles(id),
+  grade text, gpa numeric(3,2) check (gpa is null or (gpa >= 0 and gpa <= 4)), feedback text, updated_by uuid references public.profiles(id),
   updated_at timestamptz not null default now(), unique(class_id, student_id)
 );
 
