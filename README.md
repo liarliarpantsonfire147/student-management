@@ -37,6 +37,12 @@ For local split-server development only, set `VITE_API_URL=http://localhost:5000
 
 To create 50 fictional students, three classes, and test enrollments, run [`supabase/seed.dev.sql`](./supabase/seed.dev.sql) in Supabase SQL Editor after `schema.sql`. Do not run this seed in a production project. The seed uses `school.test` email addresses and is safe to rerun.
 
+To populate every enrolled student with varied test grades, GPAs, and feedback, run:
+
+```bash
+npm run seed:grades
+```
+
 ## Structure
 
 `src/App.jsx` contains the lightweight routed screens and grade drawer. `server/index.js` contains the service-role-only staff creation route plus class, roster, and grade endpoints. `supabase/schema.sql` creates the profiles, classes, class assignments, students, enrollments, and grades tables with teacher-scoped RLS.
