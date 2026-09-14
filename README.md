@@ -29,7 +29,9 @@ teacher@school.edu / ChangeMe_Teacher_2025!
 
 Set `INITIAL_*` values in `.env` before running the command if you want different credentials. Change the passwords immediately after signing in.
 
-Run `npm run server` in a second terminal for the Express API, then `npm run dev` for the frontend. The frontend uses Supabase Auth and queries Supabase directly with the browser-safe anon key.
+For Vercel, the project includes a serverless `POST /api/users` function for admin staff creation. Add `SUPABASE_URL` and `SUPABASE_SECRET_KEY` in Vercel's Environment Variables panel (do not prefix these with `VITE_`). `SUPABASE_SERVICE_ROLE_KEY` is supported as a legacy fallback. The frontend calls `/api/users` on the same Vercel domain automatically, so do not set `VITE_API_URL` in Vercel.
+
+For local split-server development only, set `VITE_API_URL=http://localhost:5000` in `.env`, then run `npm run server` and `npm run dev`. The frontend uses Supabase Auth and queries Supabase directly with the browser-safe anon key.
 
 ## Optional development data
 
